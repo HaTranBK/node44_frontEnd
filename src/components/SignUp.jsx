@@ -5,15 +5,19 @@ import { Box, CardMedia } from "@mui/material";
 import { Videos, ChannelCard } from ".";
 import { RegisterAPI } from "../utils/fetchFromAPI";
 import { toast } from "react-toastify";
-
+import QRCode from "qrcode";
 const SignUp = () => {
   const [channelDetail, setChannelDetail] = useState();
   const [videos, setVideos] = useState(null);
+  const [isQRScanned, setIsQRScanned] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const [qrCode, setQrCode] = useState(null);
   useEffect(() => {}, []);
-
+  const handleQrScanConfirmation = () => {
+    setIsQRScanned(true);
+    navigate("/login");
+  };
   const handleRegister = () => {
     const fullName = document.querySelector("#fullName").value;
     const email = document.querySelector("#email").value;
@@ -22,14 +26,21 @@ const SignUp = () => {
     const payload = { fullName, email, pass };
     RegisterAPI(payload)
       .then((res) => {
-        toast.success(res.message);
         console.log("data in register: ", res);
-        navigate("/login");
+        const { secret } = res.data;
+        const otpAuth = `otpauth://totp/${email}?secret=${secret}&issuer=Node44-youtube`;
+        QRCode.toDataURL(otpAuth)
+          .then((qrCodeURL) => {
+            setQrCode(qrCodeURL);
+            toast.success(res.message);
+          })
+          .catch();
+        // navigate("/login");
       })
       .catch((err) => {
         console.log("error in handleRegister: ", err);
 
-        toast.error(err.response.data.message);
+        // toast.error(err.response.data.message);
       });
   };
   return (
@@ -70,6 +81,21 @@ const SignUp = () => {
           </div>
         </form>
       </div>
+      {/* Hiển thị mã QR nếu có */}
+      {qrCode && (
+        <div className="text-center mt-4">
+          <h4>Scan the QR Code with Google Authenticator</h4>
+          <img src={qrCode} alt="QR Code" />
+          {/* <p>Secret: {secret}</p> Có thể hiển thị secret để sao lưu */}
+          <button
+            onClick={handleQrScanConfirmation}
+            type="button"
+            className="btn btn-success mt-3"
+          >
+            I've Scanned the QR Code
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -14,6 +14,7 @@ import InfoUser from "./components/InfoUser";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
+import ForgotPassword from "./components/ForgotPassword.jsx";
 
 const App = () => (
   <>
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/video/:id" element={<VideoDetail />} />
           <Route path="/channel/:id" element={<ChannelDetail />} />
           <Route path="/info/:id" element={<InfoUser />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/search/:searchTerm" element={<SearchFeed />} />
