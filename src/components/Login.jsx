@@ -29,7 +29,7 @@ const Login = () => {
         navigate("/");
       })
       .catch((err) => {
-        toast.error("loi");
+        toast.error(err.message);
         console.log("error in login on FE:", err);
       });
   };

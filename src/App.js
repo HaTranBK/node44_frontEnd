@@ -15,6 +15,7 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
 import ForgotPassword from "./components/ForgotPassword.jsx";
+import Socket from "./components/Socket.jsx";
 
 const App = () => (
   <>
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/search/:searchTerm" element={<SearchFeed />} />
+          <Route path="/socket" element={<Socket />} />
         </Routes>
         <Footer />
       </Box>
